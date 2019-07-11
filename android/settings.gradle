@@ -1,0 +1,3 @@
+rootProject.name = 'rocketshoesMobile'
+
+include ':app'
