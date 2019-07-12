@@ -24,7 +24,6 @@ class Main extends Component {
     };
 
     async componentDidMount() {
-        const { products } = this.state;
         const response = await api.get('/products');
         const data = response.data.map(product => ({
             ...product,
@@ -33,10 +32,10 @@ class Main extends Component {
         this.setState({ products: data });
     }
 
-    handleAddProduct = product => {
-        const { addToCart } = this.props;
+    handleAddProduct = id => {
+        const { addToCartRequest } = this.props;
 
-        addToCart(product);
+        addToCartRequest(id);
     };
 
     render() {
@@ -53,7 +52,7 @@ class Main extends Component {
                             <ProductImage source={{ uri: item.image }} />
                             <ProductTitle>{item.title}</ProductTitle>
                             <AddToCartButton
-                                onPress={() => this.handleAddProduct(item)}
+                                onPress={() => this.handleAddProduct(item.id)}
                             >
                                 <ViewCartInfo>
                                     <Icon

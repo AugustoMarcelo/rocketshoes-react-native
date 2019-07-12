@@ -89,3 +89,33 @@ export const CheckoutButton = styled(RectButton)`
     border-radius: 4px;
     margin: 2px;
 `;
+
+export const EmptyCartContainer = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const EmptyCart = styled.View`
+    background: #fff;
+    flex-direction: column;
+    align-items: center;
+`;
+
+export const EmptyCartMessage = styled.Text`
+    margin: 15px 0;
+    color: #222;
+    font-size: 16px;
+    font-weight: bold;
+`;
+
+export const BackHomeButton = styled(RectButton)`
+    background: #7159c1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    color: #fff;
+    border-radius: 4px;
+    margin: 2px;
+`;

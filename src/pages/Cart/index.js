@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Image, TouchableOpacity, TextInput, Text } from 'react-native';
-import api from '../../servies/api';
+import { Image, TouchableOpacity, Text } from 'react-native';
 import { formatPrice } from '../../util/format';
 
 import {
@@ -22,20 +21,30 @@ import {
     CartItemTotalValue,
     CheckoutButton,
     CartTotal,
+    EmptyCartContainer,
+    EmptyCart,
+    EmptyCartMessage,
+    BackHomeButton,
 } from './styles';
 
 import * as CartActions from '../../store/modules/cart/actions';
 
-function Cart({ cart, total, removeFromCart, updateAmount }) {
+function Cart({
+    navigation,
+    cart,
+    total,
+    removeFromCart,
+    updateAmountRequest,
+}) {
     function increment(product) {
-        updateAmount(product.id, product.amount + 1);
+        updateAmountRequest(product.id, product.amount + 1);
     }
 
     function decrement(product) {
-        updateAmount(product.id, product.amount - 1);
+        updateAmountRequest(product.id, product.amount - 1);
     }
 
-    return (
+    return cart.length > 0 ? (
         <Container>
             <ProductList
                 data={cart}
@@ -98,6 +107,20 @@ function Cart({ cart, total, removeFromCart, updateAmount }) {
                 <Text style={{ color: '#fff' }}>FINALIZAR PEDIDO</Text>
             </CheckoutButton>
         </Container>
+    ) : (
+        <EmptyCartContainer>
+            <EmptyCart>
+                <Icon name="remove-shopping-cart" size={128} color="#777" />
+                <EmptyCartMessage>
+                    Seu carrinho ainda está vazio...
+                </EmptyCartMessage>
+                <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+                    <BackHomeButton>
+                        <Text style={{ color: '#fff' }}>VER PRODUTOS</Text>
+                    </BackHomeButton>
+                </TouchableOpacity>
+            </EmptyCart>
+        </EmptyCartContainer>
     );
 }
 
