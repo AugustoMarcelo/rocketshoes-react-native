@@ -29,6 +29,7 @@ export const ProductInfo = styled.View`
     flex-direction: column;
     flex: 1;
     justify-content: space-between;
+    margin-left: 5px;
 `;
 
 export const Title = styled.Text``;
