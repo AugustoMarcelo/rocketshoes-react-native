@@ -53,7 +53,7 @@ export const CartItemCount = styled.View`
 `;
 
 export const Amount = styled.Text`
-    margin: 0 3px;
+    margin: 0 10px;
 `;
 
 export const CartItemTotalValue = styled.Text`

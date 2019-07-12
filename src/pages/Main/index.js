@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import { formatPrice } from '../../util/format';
 import api from '../../servies/api';
+import * as CartActions from '../../store/modules/cart/actions';
 import {
     Container,
     ProductList,
@@ -15,7 +18,7 @@ import {
     ProductCountText,
 } from './styles';
 
-export default class Main extends Component {
+class Main extends Component {
     state = {
         products: [],
     };
@@ -23,11 +26,23 @@ export default class Main extends Component {
     async componentDidMount() {
         const { products } = this.state;
         const response = await api.get('/products');
-        this.setState({ products: [...products, ...response.data] });
+        const data = response.data.map(product => ({
+            ...product,
+            priceFormatted: formatPrice(product.price),
+        }));
+        this.setState({ products: data });
     }
+
+    handleAddProduct = product => {
+        const { addToCart } = this.props;
+
+        addToCart(product);
+    };
 
     render() {
         const { products } = this.state;
+        const { amountInCart } = this.props;
+
         return (
             <Container>
                 <ProductList
@@ -37,18 +52,22 @@ export default class Main extends Component {
                         <Product>
                             <ProductImage source={{ uri: item.image }} />
                             <ProductTitle>{item.title}</ProductTitle>
-                            <AddToCartButton onPress={() => {}}>
+                            <AddToCartButton
+                                onPress={() => this.handleAddProduct(item)}
+                            >
                                 <ViewCartInfo>
                                     <Icon
                                         name="add-shopping-cart"
                                         size={20}
                                         color="#FFF"
                                     />
-                                    <ProductCountText>0</ProductCountText>
+                                    <ProductCountText>
+                                        {amountInCart[item.id] || 0}
+                                    </ProductCountText>
                                 </ViewCartInfo>
                                 <AddToCartText>ADICIONAR</AddToCartText>
                             </AddToCartButton>
-                            <Price>{item.price}</Price>
+                            <Price>{item.priceFormatted}</Price>
                         </Product>
                     )}
                 />
@@ -56,3 +75,18 @@ export default class Main extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    amountInCart: state.cart.reduce((amountInCart, product) => {
+        amountInCart[product.id] = product.amount;
+        return amountInCart;
+    }, {}),
+});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(CartActions, dispatch);
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Main);

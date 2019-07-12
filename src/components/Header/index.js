@@ -1,9 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Header, CartInfo, CountText } from './styles';
 
-export default function CustomHeader({ navigation }) {
+function CustomHeader({ navigation, cartSize }) {
     return (
         <Header>
             <Image
@@ -18,9 +19,13 @@ export default function CustomHeader({ navigation }) {
                         color="#fff"
                         style={{ marginRight: 5 }}
                     />
-                    <CountText>0</CountText>
+                    <CountText>{cartSize}</CountText>
                 </CartInfo>
             </TouchableOpacity>
         </Header>
     );
 }
+
+export default connect(state => ({
+    cartSize: state.cart.length,
+}))(CustomHeader);
