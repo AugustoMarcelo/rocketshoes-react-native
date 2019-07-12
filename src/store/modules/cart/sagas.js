@@ -4,11 +4,15 @@ import { showMessage } from 'react-native-flash-message';
 import api from '../../../servies/api';
 import { formatPrice } from '../../../util/format';
 
-import { addToCartSuccess, updateAmountSuccess } from './actions';
+import {
+    addToCartSuccess,
+    updateAmountSuccess,
+    updateAmountFailed,
+} from './actions';
 
 function* addToCart({ id }) {
     const productExists = yield select(state =>
-        state.cart.find(p => p.id === id)
+        state.cart.products.find(p => p.id === id)
     );
 
     const stock = yield call(api.get, `/stock/${id}`);
@@ -25,7 +29,7 @@ function* addToCart({ id }) {
             type: 'danger',
             duration: 3000,
         });
-        return;
+        return yield put(updateAmountFailed());
     }
 
     if (productExists) {

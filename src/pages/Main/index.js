@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -40,7 +41,7 @@ class Main extends Component {
 
     render() {
         const { products } = this.state;
-        const { amountInCart } = this.props;
+        const { amountInCart, adding } = this.props;
 
         return (
             <Container>
@@ -55,14 +56,23 @@ class Main extends Component {
                                 onPress={() => this.handleAddProduct(item.id)}
                             >
                                 <ViewCartInfo>
-                                    <Icon
-                                        name="add-shopping-cart"
-                                        size={20}
-                                        color="#FFF"
-                                    />
-                                    <ProductCountText>
-                                        {amountInCart[item.id] || 0}
-                                    </ProductCountText>
+                                    {!adding.includes(item.id) ? (
+                                        <>
+                                            <Icon
+                                                name="add-shopping-cart"
+                                                size={20}
+                                                color="#FFF"
+                                            />
+                                            <ProductCountText>
+                                                {amountInCart[item.id] || 0}
+                                            </ProductCountText>
+                                        </>
+                                    ) : (
+                                        <ActivityIndicator
+                                            size={20}
+                                            color="#cecece"
+                                        />
+                                    )}
                                 </ViewCartInfo>
                                 <AddToCartText>ADICIONAR</AddToCartText>
                             </AddToCartButton>
@@ -76,10 +86,11 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => ({
-    amountInCart: state.cart.reduce((amountInCart, product) => {
+    amountInCart: state.cart.products.reduce((amountInCart, product) => {
         amountInCart[product.id] = product.amount;
         return amountInCart;
     }, {}),
+    adding: state.cart.adding,
 });
 
 const mapDispatchToProps = dispatch =>
