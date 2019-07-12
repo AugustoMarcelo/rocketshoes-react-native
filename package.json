@@ -4,12 +4,18 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "api:server": "json-server --host 192.168.0.104 server.json -p 3333"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "react": "16.8.3",
     "react-native": "0.59.10",
-    "reactotron-react-native": "^3.6.4"
+    "react-native-gesture-handler": "^1.3.0",
+    "react-native-vector-icons": "^6.6.0",
+    "react-navigation": "^3.11.0",
+    "reactotron-react-native": "^3.6.4",
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
@@ -24,6 +30,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
     "jest": "^24.8.0",
+    "json-server": "^0.15.0",
     "metro-react-native-babel-preset": "^0.55.0",
     "prettier": "^1.18.2",
     "react-test-renderer": "16.8.3"
