@@ -1,6 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
+import FlashMessage from 'react-native-flash-message';
 
 import './config/ReactotronConfig';
 
@@ -12,6 +13,7 @@ export default function App() {
         <Provider store={store}>
             <StatusBar barStyle="light-content" backgroundColor="#141419" />
             <Routes />
+            <FlashMessage position="top" />
         </Provider>
     );
 }

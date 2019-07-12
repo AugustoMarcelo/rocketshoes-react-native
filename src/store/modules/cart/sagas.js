@@ -1,5 +1,5 @@
 import { call, select, put, all, takeLatest } from 'redux-saga/effects';
-import { Alert } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 import api from '../../../servies/api';
 import { formatPrice } from '../../../util/format';
@@ -19,7 +19,12 @@ function* addToCart({ id }) {
     const amount = currentAmount + 1;
 
     if (amount > stockAmount) {
-        Alert.alert('Ops...', 'Quantidade solicitada fora de estoque.');
+        showMessage({
+            message: 'Ops...',
+            description: 'Quantidade solicitada fora de estoque',
+            type: 'danger',
+            duration: 3000,
+        });
         return;
     }
 
@@ -45,7 +50,12 @@ function* updateAmount({ id, amount }) {
     const stockAmount = stock.data.amount;
 
     if (amount > stockAmount) {
-        Alert.alert('Ops...', 'Quantidade solicitada fora de estoque!');
+        showMessage({
+            message: 'Ops...',
+            description: 'Quantidade solicitada fora de estoque',
+            type: 'danger',
+            duration: 3000,
+        });
         return;
     }
 
