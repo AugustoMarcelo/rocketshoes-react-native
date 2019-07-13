@@ -10,5 +10,3 @@ Rocketshoes | Application developed in challange of module 7 of the bootcamp usi
 <img width="200" height="400" src="https://user-images.githubusercontent.com/11545976/61165602-05a4a900-a4f9-11e9-9a18-d24bae0faf53.jpg">
 </>
 
-## Running..
-![app](https://user-images.githubusercontent.com/11545976/61176532-bf068b80-a598-11e9-8242-1ca0a07d40ad.gif)
