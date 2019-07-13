@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
+import Shimmer from 'react-native-shimmer-placeholder';
 
 export const Container = styled.View`
     flex: 1;
@@ -17,7 +18,7 @@ export const Product = styled.View`
     flex-direction: column;
     padding: 10px;
     border-radius: 2px;
-    margin-bottom: 10px;
+    margin-bottom: ${props => (props.last ? '20px' : '10px')};
     position: relative;
     elevation: 5;
 `;
@@ -77,4 +78,35 @@ export const ProductCountText = styled.Text`
     margin-left: 5px;
     color: #fff;
     font-size: 14px;
+`;
+
+export const ShimmerImage = styled(Shimmer)`
+    width: 164px;
+    height: 164px;
+    align-self: center;
+    margin: 5px 0;
+    border-radius: 2px;
+`;
+
+export const ShimmerTitle = styled(Shimmer)`
+    width: 200;
+    height: 20px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+`;
+
+export const ShimmerButton = styled(Shimmer)`
+    height: 40px;
+    width: 100%;
+    border-radius: 2px;
+`;
+
+export const ShimmerPrice = styled(Shimmer)`
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 70px;
+    height: 40px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
 `;
