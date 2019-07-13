@@ -17,10 +17,15 @@ import {
     ViewCartInfo,
     AddToCartText,
     ProductCountText,
+    ShimmerImage,
+    ShimmerTitle,
+    ShimmerButton,
+    ShimmerPrice,
 } from './styles';
 
 export default function Main() {
     const [products, setProducts] = useState([]);
+    const [visible, setVisible] = useState(false);
 
     const amountInCart = useSelector(state =>
         state.cart.products.reduce((sumAmountInCart, product) => {
@@ -50,46 +55,71 @@ export default function Main() {
         dispatch(CartActions.addToCartRequest(id));
     }
 
-    return (
-        <Container>
+    const renderContainer = () => {
+        if (!products.length) {
+            return (
+                <ProductList
+                    data={[...Array(3).keys()]}
+                    keyExtractor={index => String(index)}
+                    renderItem={({ index }) => (
+                        <Product>
+                            <ShimmerImage autoRun visible={visible} />
+                            <ShimmerTitle autoRun visible={visible} />
+                            <ShimmerButton autoRun visible={visible} />
+                            <ShimmerPrice autoRun visible={visible} />
+                        </Product>
+                    )}
+                />
+            );
+        }
+
+        return (
             <ProductList
                 data={products}
                 keyExtractor={product => String(product.id)}
-                renderItem={({ item }) => (
-                    <Product>
-                        <ProductImage source={{ uri: item.image }} />
-                        <ProductTitle>{item.title}</ProductTitle>
-                        <AddToCartButton
-                            onPress={() => handleAddProduct(item.id)}
-                        >
-                            <ViewCartInfo>
-                                {!adding.includes(item.id) ? (
-                                    <>
-                                        <Icon
-                                            name="add-shopping-cart"
-                                            size={20}
-                                            color="#FFF"
+                renderItem={({ item, index }) => (
+                    <Product last={index === products.length - 1 ? 1 : 0}>
+                        <ShimmerImage autoRun visible>
+                            <ProductImage source={{ uri: item.image }} />
+                        </ShimmerImage>
+                        <ShimmerTitle autoRun visible>
+                            <ProductTitle>{item.title}</ProductTitle>
+                        </ShimmerTitle>
+                        <ShimmerButton autoRun visible>
+                            <AddToCartButton
+                                onPress={() => handleAddProduct(item.id)}
+                            >
+                                <ViewCartInfo>
+                                    {!adding.includes(item.id) ? (
+                                        <>
+                                            <Icon
+                                                name="add-shopping-cart"
+                                                size={20}
+                                                color="#FFF"
+                                            />
+                                            <ProductCountText>
+                                                {amountInCart[item.id] || 0}
+                                            </ProductCountText>
+                                        </>
+                                    ) : (
+                                        <ActivityIndicator
+                                            size={21}
+                                            color="#cecece"
+                                            style={{
+                                                paddingHorizontal: 6,
+                                            }}
                                         />
-                                        <ProductCountText>
-                                            {amountInCart[item.id] || 0}
-                                        </ProductCountText>
-                                    </>
-                                ) : (
-                                    <ActivityIndicator
-                                        size={21}
-                                        color="#cecece"
-                                        style={{
-                                            paddingHorizontal: 6,
-                                        }}
-                                    />
-                                )}
-                            </ViewCartInfo>
-                            <AddToCartText>ADICIONAR</AddToCartText>
-                        </AddToCartButton>
+                                    )}
+                                </ViewCartInfo>
+                                <AddToCartText>ADICIONAR</AddToCartText>
+                            </AddToCartButton>
+                        </ShimmerButton>
                         <Price>{item.priceFormatted}</Price>
                     </Product>
                 )}
             />
-        </Container>
-    );
+        );
+    };
+
+    return <Container>{renderContainer()}</Container>;
 }
