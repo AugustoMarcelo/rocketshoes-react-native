@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import { formatPrice } from '../../util/format';
 import api from '../../servies/api';
 import * as CartActions from '../../store/modules/cart/actions';
@@ -22,6 +23,7 @@ import {
 class Main extends Component {
     state = {
         products: [],
+        visible: false,
     };
 
     async componentDidMount() {
@@ -30,7 +32,7 @@ class Main extends Component {
             ...product,
             priceFormatted: formatPrice(product.price),
         }));
-        this.setState({ products: data });
+        this.setState({ products: data, visible: true });
     }
 
     handleAddProduct = id => {
@@ -40,7 +42,7 @@ class Main extends Component {
     };
 
     render() {
-        const { products } = this.state;
+        const { products, visible } = this.state;
         const { amountInCart, adding } = this.props;
 
         return (
@@ -69,8 +71,11 @@ class Main extends Component {
                                         </>
                                     ) : (
                                         <ActivityIndicator
-                                            size={20}
+                                            size={21}
                                             color="#cecece"
+                                            style={{
+                                                paddingHorizontal: 6,
+                                            }}
                                         />
                                     )}
                                 </ViewCartInfo>
